@@ -1,0 +1,12 @@
+{
+  "name": "pjs-beauty-bar",
+  "private": true,
+  "type": "module",
+  "description": "PJs' Beauty Bar website with a simple /admin for products",
+  "dependencies": {
+    "@vercel/blob": "^2.9.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
