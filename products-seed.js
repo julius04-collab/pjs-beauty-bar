@@ -110,10 +110,10 @@ window.PJS_SEED = [
  },
  {
   "id": "seed-13",
-  "name": "Golden Clover Bracelet",
+  "name": "Clover Beaded Bracelet (black or crystal)",
   "category": "adornment",
   "price": "",
-  "image": "img/bracelet-gold.jpg",
+  "image": "img/bracelet-clover.jpg",
   "inStock": true,
   "order": 12
  },
