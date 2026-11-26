@@ -156,8 +156,12 @@ nav a:hover::after{transform:scaleX(1)}
 .view:hover svg{transform:translateX(5px)}
 
 /* category tiles */
-.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.tile{position:relative;aspect-ratio:3/4;border-radius:20px;overflow:hidden;text-decoration:none;color:#fff;background:var(--bg2)}
+.tiles{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:16px;height:clamp(480px,50vw,660px)}
+.tile.big{grid-row:span 2}
+.tile.big b{font-size:clamp(24px,2.8vw,34px)}
+.tile.big small{font-size:15px}
+.tile .go{display:inline-flex;white-space:nowrap;margin-top:12px;background:#fff;color:var(--ink);font-size:14px;font-weight:500;padding:8px 16px;border-radius:999px}
+.tile{position:relative;border-radius:20px;overflow:hidden;text-decoration:none;color:#fff;background:var(--bg2)}
 .tile img{transition:transform 1s cubic-bezier(.2,.8,.2,1)}
 .tile:hover img{transform:scale(1.06)}
 .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(10,8,5,.72))}
@@ -168,7 +172,7 @@ nav a:hover::after{transform:scaleX(1)}
 .tile .draw{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(120% 90% at 30% 20%,#fdfaf5,#efe2cc 60%,#dcc29b)}
 .tile .draw svg{width:64%;margin-top:-48%}
 .tile.lt{color:var(--ink)}.tile.lt::after{display:none}
-@media(max-width:820px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+@media(max-width:820px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;height:auto;gap:12px}.tile.big{grid-row:auto;grid-column:1/-1;aspect-ratio:5/4}.tile:not(.big){aspect-ratio:1/1}.tile:not(.big) small{display:none}.tile:not(.big) b{font-size:17px}.tile.big b{font-size:26px}.tile.big small{font-size:14px}.tile .go{font-size:13.5px;padding:7px 14px;margin-top:10px}}
 
 /* product rows */
 .coll+.coll{border-top:1px solid var(--line)}
@@ -203,6 +207,13 @@ button.view{background:none;border:0;border-bottom:1px solid var(--ink);font-fam
 .coll.all .card{flex-basis:auto}
 .coll.all .arrows,.coll.all .track-line{display:none}
 @media(max-width:600px){.coll.all .scroller{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}.coll.all .card h4{font-size:14.5px}}
+
+.coll.feature .scroller{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 16px;overflow:visible;max-width:1240px;margin:0 auto;padding:4px max(5vw,18px) 0;scroll-snap-type:none}
+.coll.feature .card{flex-basis:auto}
+.coll.feature:not(.all) .card:nth-child(n+9){display:none}
+.coll.feature .arrows,.coll.feature .track-line{display:none}
+.coll.feature .card h4{font-size:16.5px}
+@media(max-width:820px){.coll.feature .scroller{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}.coll.feature:not(.all) .card:nth-child(n+7){display:none}.coll.feature .card h4{font-size:14.5px}}
 
 /* feature pair */
 .pair{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
@@ -409,23 +420,23 @@ const waIcon='<svg viewBox="0 0 24 24" fill="currentColor"><use href="#wa"/></sv
 const lounge='<svg viewBox="0 0 320 240" fill="none"><ellipse cx="160" cy="214" rx="120" ry="12" fill="#14110d" opacity=".12"/><rect x="58" y="150" width="204" height="58" rx="14" fill="#fff" stroke="#b98a3e" stroke-width="2"/><path d="M58 172h204" stroke="#b98a3e" stroke-width="1.5" stroke-dasharray="4 5"/><rect x="72" y="98" width="176" height="56" rx="14" fill="#14110d"/><path d="M72 120h176" stroke="#e2bd78" stroke-width="1.5"/><rect x="90" y="50" width="140" height="52" rx="14" fill="#e9d6b8" stroke="#b98a3e" stroke-width="2"/><path d="M90 72h140" stroke="#fff" stroke-width="2" opacity=".7"/><circle cx="160" cy="62" r="4" fill="#b98a3e"/></svg>';
 
 const tiles=[
- ['adornment','Adornment','Earrings, bangles, rings','ear-petal.jpg'],
+ ['adornment','Adornment','Earrings, bangles, rings & waist beads','ear-petal.jpg',1],
+ ['intimates','Intimates','Bras, panties, lingerie & men\'s boxers','intimates-rack.jpg',1],
  ['fragrance','Fragrance','Perfume oils & mists','fragrance.jpg'],
- ['intimates','Intimates','Bras, panties, lingerie','intimates-rack.jpg'],
- ['lounge','Home & Lounge','Pyjamas & lounge sets','lounge-bow-long.jpg']
+ ['lounge','Home & Lounge','Pyjamas & lounge sets','lounge-bow-wide.jpg']
 ];
 document.getElementById('tiles').innerHTML=tiles.map((t,i)=>`
-<a class="tile rv d${i}${t[3]?'':' lt'}" href="#${t[0]}">
+<a class="tile rv d${i}${t[3]?'':' lt'}${t[4]?' big':''}" href="#${t[0]}">
   ${t[3]?`<img src="img/${t[3]}" alt="" loading="lazy">`:`<div class="draw">${lounge}</div><span class="soon">Coming soon</span>`}
-  <div class="lb"><b>${esc(t[1])}</b><small>${esc(t[2])}</small></div>
+  <div class="lb"><b>${esc(t[1])}</b><small>${esc(t[2])}</small>${t[4]?`<span class="go">Shop ${esc(t[1])}</span>`:''}</div>
 </a>`).join('');
 
 const SECTIONS=[
- {id:'adornment',slot:'rows',h:'Adornment',p:'Statement earrings, gold cuffs and rings.'},
+ {id:'adornment',slot:'rows',h:'Adornment',p:'Statement earrings, gold cuffs, rings and bracelets.',feature:1},
+ {id:'intimates',slot:'rows',h:'Intimates',p:'Lace and seamless basics for her, boxers and singlets for him.',feature:1},
  {id:'beads',slot:'rows',h:'Idi Ileke waist beads',p:"Handmade by PJs'. Elegance in every strand."},
- {id:'fragrance',slot:'rows2',h:'Fragrance',p:'Perfume oils, body mists and pocket perfumes.',min:2},
  {id:'lounge',slot:'rows2',h:'Home & Lounge',p:'Pyjamas and lounge sets, soft enough for every quiet moment.'},
- {id:'intimates',slot:'rows2',h:'Intimates',p:'Lace and seamless basics for her, boxers and singlets for him.'}
+ {id:'fragrance',slot:'rows2',h:'Fragrance',p:'Perfume oils, body mists and pocket perfumes.',min:2}
 ];
 const naira=p=>'₦'+Number(p).toLocaleString('en-NG');
 const cardHTML=(p,i)=>{
@@ -437,19 +448,19 @@ const cardHTML=(p,i)=>{
       <div class="meta"><span>${p.price?naira(p.price):'Price on request'}</span><span>${waIcon}${sold?'Ask':'Order'}</span></div></a>`;
 };
 const rowHTML=(r,items)=>`
-<section class="band coll" id="${r.id}">
+<section class="band coll${r.feature?' feature':''}" id="${r.id}">
   <div class="wrap head">
     <div><h2 class="rv">${esc(r.h)}</h2><p class="rv d1">${esc(r.p)}</p></div>
     <div style="display:flex;gap:16px;align-items:center" class="rv d2">
       <div class="arrows"><button data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button><button data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button></div>
-      ${items.length>3?`<button class="view" data-all aria-expanded="false">View all (${items.length}) ${arrow}</button>`:''}
+      ${items.length>(r.feature?6:3)?`<button class="view" data-all aria-expanded="false">View all (${items.length}) ${arrow}</button>`:''}
     </div>
   </div>
   <div class="scroller" tabindex="0" aria-label="${esc(r.h)} products">${items.map(cardHTML).join('')}</div>
   <div class="wrap"><div class="track-line"><i></i></div></div>
 </section>`;
 
-const mqItems=['Gold earrings','Bangles','Waist beads','Perfume oils','Lingerie','Pyjamas','Lounge sets','Everyday Elegance'];
+const mqItems=['Gold earrings','Lingerie','Bangles & cuffs','Bras & panties','Waist beads','Men\'s boxers','Perfume oils','Pyjamas','Everyday Elegance'];
 document.getElementById('mq').innerHTML=[...mqItems,...mqItems].map(x=>`<span>${esc(x)}</span>`).join('');
 document.querySelectorAll('[data-wa]').forEach(a=>{a.href=waLink(a.dataset.wa);a.target='_blank';a.rel='noopener'});
 
@@ -520,7 +531,7 @@ const onScroll=()=>{
     const lim=innerWidth<820?24:48;
     par.forEach(el=>{const r=el.getBoundingClientRect();if(r.bottom<-vh||r.top>2*vh)return;const mid=r.top+r.height/2-vh/2;const v=Math.max(-lim,Math.min(lim,-mid*parseFloat(el.dataset.speed)));el.style.translate=`0 ${v.toFixed(1)}px`});
     scs.forEach(o=>{
-      if(o.sec.classList.contains('all'))return;
+      if(o.sec.classList.contains('all')||o.sec.classList.contains('feature'))return;
       const r=o.sec.getBoundingClientRect();
       const p=(vh-r.top)/(vh+r.height);
       if(o.last!==null&&r.bottom>0&&r.top<vh){
